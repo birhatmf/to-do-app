@@ -214,11 +214,11 @@ export default function ProfilePage() {
       {/* Profile Info Card */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 className="text-lg font-semibold text-gray-900">Profil Bilgileri</h2>
             <button
               onClick={() => setIsEditingProfile(true)}
-              className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+              className="w-full sm:w-auto px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition"
             >
               Düzenle
             </button>
@@ -256,11 +256,11 @@ export default function ProfilePage() {
       {/* Security Card */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4">
             <h2 className="text-lg font-semibold text-gray-900">Güvenlik</h2>
             <button
               onClick={() => setIsChangingPassword(true)}
-              className="px-4 py-2 text-sm font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+              className="w-full sm:w-auto px-4 py-2 text-sm font-medium border border-gray-300 rounded-lg hover:bg-gray-50 transition"
             >
               Şifre Değiştir
             </button>

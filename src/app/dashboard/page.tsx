@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
 import { TaskStatus, Role } from '@prisma/client';
 import KPICard from '@/components/dashboard/KPICard';
-import TaskTable from '@/components/dashboard/TaskTable';
+import TaskTableWithModal from '@/components/dashboard/TaskTableWithModal';
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -93,25 +93,25 @@ export default async function DashboardPage() {
         <KPICard
           title="Toplam Görev"
           value={totalTasks}
-          icon={<span className="text-2xl">📋</span>}
+          icon={<span className="text-2xl"></span>}
           color="blue"
         />
         <KPICard
           title="Sürüyor"
           value={inProgressTasks}
-          icon={<span className="text-2xl">🔄</span>}
+          icon={<span className="text-2xl"></span>}
           color="yellow"
         />
         <KPICard
           title="Tamamlanan"
           value={doneTasks}
-          icon={<span className="text-2xl">✅</span>}
+          icon={<span className="text-2xl"></span>}
           color="green"
         />
         <KPICard
           title="Bekleyen"
           value={upcomingDeadlines}
-          icon={<span className="text-2xl">⏳</span>}
+          icon={<span className="text-2xl"></span>}
           color="purple"
         />
       </div>
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
           <h2 className="text-lg font-semibold text-gray-900">Aktif Görevler</h2>
           <p className="text-sm text-gray-600">Son 5 aktif görev</p>
         </div>
-        <TaskTable tasks={activeTasks} />
+        <TaskTableWithModal tasks={activeTasks} />
       </div>
     </div>
   );

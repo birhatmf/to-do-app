@@ -235,14 +235,14 @@ export default function TasksPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Görevler</h1>
           <p className="text-gray-600">Tüm görevleri yönetin</p>
         </div>
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
+          className="w-full sm:w-auto bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
         >
           + Yeni Görev
         </button>
@@ -250,18 +250,18 @@ export default function TasksPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <input
             type="text"
             placeholder="Ara..."
             value={filters.q}
             onChange={(e) => setFilters({ ...filters, q: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
           />
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
           >
             <option value="">Tüm Durumlar</option>
             <option value="TODO">Yapılacak</option>
@@ -271,7 +271,7 @@ export default function TasksPage() {
           <div className="flex gap-2">
             <button
               onClick={clearFilters}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm"
             >
               Temizle
             </button>
@@ -294,16 +294,16 @@ export default function TasksPage() {
             </button>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-4 lg:mx-0">
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Proje</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Görev</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Atanan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tahmini</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Durum</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">İşlem</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Proje</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Görev</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden md:table-cell">Atanan</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden lg:table-cell">Tahmini</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Durum</th>
+                  <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase hidden sm:table-cell">İşlem</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -316,16 +316,16 @@ export default function TasksPage() {
                       setIsEditModalOpen(true);
                     }}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {task.project.name}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 lg:px-6 py-4">
                       <div className="text-sm font-medium text-gray-900">{task.title}</div>
                       {task.description && (
                         <p className="text-xs text-gray-500 mt-1 line-clamp-2">{task.description}</p>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap hidden md:table-cell">
                       <div className="flex items-center">
                         <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
                           <span className="text-xs font-medium text-primary">
@@ -337,12 +337,12 @@ export default function TasksPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden lg:table-cell">
                       {task.estimateValue && task.estimateUnit && (
                         `${task.estimateValue} ${task.estimateUnit === EstimateUnit.HOUR ? 'Saat' : task.estimateUnit === EstimateUnit.DAY ? 'Gün' : 'Hafta'}`
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                       <select
                         value={task.status}
                         onChange={(e) => {
@@ -357,7 +357,7 @@ export default function TasksPage() {
                         <option value="DONE">Tamamlandı</option>
                       </select>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap hidden sm:table-cell">
                       <div className="flex items-center gap-3">
                         <button
                           onClick={(e) => {
