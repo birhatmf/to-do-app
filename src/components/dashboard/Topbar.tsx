@@ -1,26 +1,38 @@
 import { User } from '@prisma/client';
+import { Menu } from 'lucide-react';
 
 interface TopbarProps {
   user: User & { team: { name: string } | null };
+  onMenuClick?: () => void;
 }
 
-export default function Topbar({ user }: TopbarProps) {
+export default function Topbar({ user, onMenuClick }: TopbarProps) {
   return (
     <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
-      <div className="flex items-center justify-between h-16 px-6">
-        {/* Page Title */}
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
+      <div className="flex items-center justify-between h-16 px-4 lg:px-6">
+        {/* Left Side - Hamburger Menu (Mobile) */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={onMenuClick}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+          >
+            <Menu className="w-6 h-6 text-gray-600" />
+          </button>
+
+          {/* Page Title (Hidden on mobile) */}
+          <div className="hidden sm:block">
+            <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
+          </div>
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 lg:space-x-4">
           {/* Search */}
           <div className="relative hidden sm:block">
             <input
               type="text"
               placeholder="Ara..."
-              className="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
+              className="w-40 lg:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm"
             />
             <svg
               className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
@@ -49,6 +61,13 @@ export default function Topbar({ user }: TopbarProps) {
               />
             </svg>
           </button>
+
+          {/* User Avatar (Mobile) */}
+          <div className="sm:hidden w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="text-primary text-sm font-semibold">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
         </div>
       </div>
     </div>
