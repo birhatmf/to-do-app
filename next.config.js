@@ -6,11 +6,6 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
 
-  // Environment variables exposed to the browser
-  env: {
-    NODE_ENV: process.env.NODE_ENV,
-  },
-
   // Logging
   logging: {
     fetches: {
