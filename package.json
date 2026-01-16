@@ -12,7 +12,13 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "pm2:start": "npm run build && pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop taskflow",
+    "pm2:restart": "pm2 restart taskflow",
+    "pm2:delete": "pm2 delete taskflow",
+    "pm2:logs": "pm2 logs taskflow",
+    "pm2:monit": "pm2 monit"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
@@ -21,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.562.0",
     "next": "^15.1.3",
+    "pm2": "^5.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zod": "^3.24.1"

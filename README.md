@@ -368,6 +368,223 @@ npm run db:seed
 npx prisma studio
 ```
 
+### 🚀 Production'da PM2 ile Çalıştırma
+
+PM2, Node.js uygulamalarını production'da yönetmek için güçlü bir process manager'dır. Uygulamanızı sürekli çalışır durumda tutar, otomatik yeniden başlatır ve cluster mode ile performansı artırır.
+
+#### PM2 Kurulumu
+
+```bash
+# PM2 global olarak kurun (önerilen)
+npm install -g pm2
+
+# Veya projeye dahil edin (zaten package.json'da mevcut)
+npm install pm2
+```
+
+#### PM2 ile Başlatma
+
+```bash
+# Build al ve PM2 ile başlat
+npm run pm2:start
+
+# Veya manuel olarak
+npm run build
+pm2 start ecosystem.config.js
+```
+
+#### PM2 Komutları
+
+```bash
+# Uygulamayı başlat
+npm run pm2:start
+
+# Uygulamayı durdur
+npm run pm2:stop
+
+# Uygulamayı yeniden başlat
+npm run pm2:restart
+
+# Uygulamayı sil (durdur ve PM2'den kaldır)
+npm run pm2:delete
+
+# Logları görüntüle
+npm run pm2:logs
+
+# Real-time monitoring
+npm run pm2:monit
+
+# Diğer PM2 komutları
+pm2 list              # Tüm uygulamaları listele
+pm2 show taskflow     # Uygulama detaylarını göster
+pm2 flush             # Tüm logları temizle
+pm2 reload taskflow   # Sıfır downtime ile yeniden yükle
+pm2 startup           # Sunucu restartında otomatik başlatma
+```
+
+#### PM2 Ecosystem Yapılandırması
+
+`ecosystem.config.js` dosyası PM2 ayarlarını içerir:
+
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'taskflow',              // Uygulama adı
+      script: 'node_modules/next/dist/bin/next',
+      args: 'start -p 3000',         // Port 3000
+      instances: 1,                  // Cluster mode (CPU sayısına göre artırılabilir)
+      exec_mode: 'cluster',          // Cluster mode
+      autorestart: true,             // Otomatik yeniden başlatma
+      max_memory_restart: '1G',      // Bellek limiti
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+      },
+      error_file: './logs/err.log',  // Hata logları
+      out_file: './logs/out.log',    # Çıktı logları
+      log_file: './logs/combined.log',
+      time: true,                    // Loglara zaman damgası
+    },
+  ],
+};
+```
+
+#### Özelleştirme
+
+**Cluster Mode (Çoklu CPU Kullanımı):**
+
+```javascript
+// ecosystem.config.js
+instances: 'max',  // veya CPU sayısı (örn: 4)
+exec_mode: 'cluster',
+```
+
+**Port Değiştirme:**
+
+```javascript
+// ecosystem.config.js
+args: 'start -p 8080',  // Port 8080
+```
+
+**Environment Değişkenleri:**
+
+```javascript
+// ecosystem.config.js
+env: {
+  NODE_ENV: 'production',
+  PORT: 3000,
+  DATABASE_URL: 'postgresql://...',
+  JWT_SECRET: 'your-secret-key',
+}
+```
+
+#### Log Yönetimi
+
+```bash
+# Logları görüntüle (son 100 satır)
+pm2 logs taskflow --lines 100
+
+# Logları temizle
+pm2 flush taskflow
+
+# Log dosyaları
+./logs/err.log      # Hata logları
+./logs/out.log      # Standart çıktı
+./logs/combined.log # Birleştirilmiş loglar
+```
+
+#### Sunucu Restart Sonrası Otomatik Başlatma
+
+Sunucu yeniden başlatıldığında uygulamanın otomatik başlaması için:
+
+```bash
+# Startup script oluştur
+pm2 startup
+
+# Çıktıdaki komutu çalıştır (sudo ile)
+# Örnek: sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u your-user --hp /home/your-user
+
+# Mevcut uygulamaları kaydet
+pm2 save
+```
+
+#### Monitor ve Yönetim
+
+```bash
+# Web-based monitoring (açık kaynak)
+pm2 plus
+
+# Keymetrics monitoring (ücretsiz plan mevcut)
+pm2 link <secret_key> <public_key>
+
+# Terminal'de real-time monitoring
+pm2 monit
+```
+
+#### Deployment Örneği
+
+```bash
+# 1. Son değişiklikleri çekin
+git pull origin main
+
+# 2. Bağımlılıkleri yükleyin
+npm install
+
+# 3. Veritabanını güncelleyin (gerekirse)
+npx prisma db push
+
+# 4. Build alın
+npm run build
+
+# 5. PM2 ile yeniden başlatın
+pm2 restart taskflow
+
+# Veya zero-downtime reload
+pm2 reload taskflow
+```
+
+#### PM2 ile Production Troubleshooting
+
+**Soru: Uygulama başlamıyor**
+
+```bash
+# Detaylı hata mesajları için
+pm2 logs taskflow --err
+
+# Yapılandırmayı kontrol edin
+pm2 show taskflow
+
+# Uygulamayı silip yeniden başlatın
+pm2 delete taskflow
+npm run pm2:start
+```
+
+**Soru: Yüksek CPU/RAM kullanımı**
+
+```bash
+# Kaynak kullanımını görüntüleyin
+pm2 monit
+
+# Bellek limitini düşürün
+max_memory_restart: '512M',
+
+# Instance sayısını azaltın
+instances: 1,
+```
+
+**Soru: Loglar çok yer kaplıyor**
+
+```bash
+# Log rotation (pm2-logrotate modülü kurun)
+pm2 install pm2-logrotate
+
+# Log rotation ayarları
+pm2 set pm2-logrotate:max_size 10M
+pm2 set pm2-logrotate:retain 7
+pm2 set pm2-logrotate:compress true
+```
+
 ---
 
 ## 👥 Kullanıcı Rolleri ve Yetkiler
