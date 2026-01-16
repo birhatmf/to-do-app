@@ -308,7 +308,14 @@ export default function TasksPage() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {tasks.map((task) => (
-                  <tr key={task.id} className="hover:bg-gray-50">
+                  <tr
+                    key={task.id}
+                    className="hover:bg-gray-50 cursor-pointer"
+                    onClick={() => {
+                      setEditingTask(task);
+                      setIsEditModalOpen(true);
+                    }}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {task.project.name}
                     </td>
@@ -338,7 +345,11 @@ export default function TasksPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <select
                         value={task.status}
-                        onChange={(e) => updateStatus(task.id, e.target.value as TaskStatus)}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          updateStatus(task.id, e.target.value as TaskStatus);
+                        }}
+                        onClick={(e) => e.stopPropagation()}
                         className="text-sm border-gray-300 rounded focus:ring-2 focus:ring-primary"
                       >
                         <option value="TODO">Yapılacak</option>
@@ -349,7 +360,8 @@ export default function TasksPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setEditingTask(task);
                             setIsEditModalOpen(true);
                           }}
@@ -358,7 +370,10 @@ export default function TasksPage() {
                           Düzenle
                         </button>
                         <button
-                          onClick={() => handleDeleteTask(task.id, task.title)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteTask(task.id, task.title);
+                          }}
                           className="text-red-600 hover:text-red-800 text-sm font-medium"
                         >
                           Sil
