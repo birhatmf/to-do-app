@@ -224,7 +224,7 @@ npm run db:seed
 npm run dev
 ```
 
-Tarayıcınızda açın: **http://localhost:3000**
+Tarayıcınızda açın: **http://localhost:3002**
 
 ---
 
@@ -341,7 +341,7 @@ Seed script'i şu verileri oluşturur:
 npm run dev
 ```
 
-Uygulama **http://localhost:3000** adresinde çalışır.
+Uygulama **http://localhost:3002** adresinde çalışır.
 
 Hot reload aktiftir - dosya değişiklikleri otomatik olarak yansır.
 
@@ -432,17 +432,17 @@ module.exports = {
     {
       name: 'taskflow',              // Uygulama adı
       script: 'node_modules/next/dist/bin/next',
-      args: 'start -p 3000',         // Port 3000
+      args: 'start -p 3002',         // Port 3002
       instances: 1,                  // Cluster mode (CPU sayısına göre artırılabilir)
       exec_mode: 'cluster',          // Cluster mode
       autorestart: true,             // Otomatik yeniden başlatma
       max_memory_restart: '1G',      // Bellek limiti
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3002,
       },
       error_file: './logs/err.log',  // Hata logları
-      out_file: './logs/out.log',    # Çıktı logları
+      out_file: './logs/out.log',    // Çıktı logları
       log_file: './logs/combined.log',
       time: true,                    // Loglara zaman damgası
     },
